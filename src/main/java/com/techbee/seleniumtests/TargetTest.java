@@ -3,10 +3,12 @@ package com.techbee.seleniumtests;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,7 +32,7 @@ public class TargetTest {
 
 		WebDriver targetDriver = new ChromeDriver();
 		targetDriver.get("https://www.target.com/");
-		targetDriver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS) ;
+		targetDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS) ;
 
 		findTargetIphoneDetailsAndSaveList(targetDriver);
 
@@ -43,11 +45,13 @@ public class TargetTest {
 		targetDriver.findElement(By.id("search")).submit();
 		Thread.sleep(5000);
 		List<WebElement> items = wait.until(ExpectedConditions
-				.presenceOfAllElementsLocatedBy(
+				.visibilityOfAllElementsLocatedBy(
 				By.cssSelector(
 						"[data-test = list-entry-product-card]")));
 		//targetDriver.findElements(By.cssSelector("[data-test = list-entry-product-card]"));
-		Thread.sleep(3000);
+		Thread.sleep(1000);
+		JavascriptExecutor jse = (JavascriptExecutor) targetDriver;
+		jse.executeScript("window.scrollTo(0,document.body.scrollHeight);");
 
 		//System.out.println(items.size());
 		findIphoneDescriptionAndPrice(items, targetDriver);
@@ -58,7 +62,8 @@ public class TargetTest {
 		WebDriverWait wait=new WebDriverWait(targetDriver, 20);
 		//System.out.println("loop method");
 		System.out.println(items.size());
-		
+		out.println(LocalDateTime.now().toString() + "\n");
+		out.flush();
 		for (WebElement item : items) {
 			//System.out.println(item.toString());
 			int index = items.indexOf(item) + 1;
