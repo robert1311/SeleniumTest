@@ -50,7 +50,7 @@ public class EbayTest {
 					.findElement(By.xpath(itemPath + "/a/h3"))
 					.getText();
 			//Thread.sleep(1000);
-			String price = item.findElement(By.className("s-item_price")).getText();
+			String price = "";//item.findElement(By.className("s-item_price")).getText();
 			System.out.println(price);
 			line = title + " - " + price;
 			writeToFile(line, out);
